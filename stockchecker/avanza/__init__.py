@@ -1,6 +1,5 @@
 import requests
 
-
 from stockchecker import celery
 from stockchecker.avanza.daos import AvanzaFondDAO
 
