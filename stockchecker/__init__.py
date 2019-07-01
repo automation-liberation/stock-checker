@@ -1,6 +1,6 @@
 from celery import Celery
 
-celery = Celery('webscraper', autofinalize=False)
+celery = Celery('stockchecker', autofinalize=False)
 
 
 def create_app():

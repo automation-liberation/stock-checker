@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from stockchecker.avanza.daos import AvanzaFondDAO
+from stockchecker.avanza.daos import AvanzaFondDAO, AvanzaStockDAO
 
 
 class AvanzaFondDAOTest(unittest.TestCase):
@@ -83,3 +83,143 @@ class AvanzaFondDAOTest(unittest.TestCase):
         self.assertEqual(dao.id, "1933")
         self.assertEqual(dao.name, "Swedbank Robur Ny Teknik A")
         self.assertEqual(dao.NAV, 861.71)
+
+
+class AvanzaStockDAOTest(unittest.TestCase):
+    stock_response = """{
+    "priceOneWeekAgo": 29.25,
+    "priceOneMonthAgo": 27.41,
+    "priceSixMonthsAgo": 18.46,
+    "priceAtStartOfYear": 18.46,
+    "priceOneYearAgo": 14.98,
+    "priceThreeYearsAgo": 5.07,
+    "priceFiveYearsAgo": 4.22,
+    "priceThreeMonthsAgo": 26.36,
+    "marketPlace": "NASDAQ",
+    "currency": "USD",
+    "buyPrice": 31.12,
+    "sellPrice": 31.13,
+    "highestPrice": 32.04,
+    "lowestPrice": 31.07,
+    "change": 0.76,
+    "changePercent": 2.5,
+    "totalVolumeTraded": 47225235,
+    "totalValueTraded": 0,
+    "lastPrice": 31.13,
+    "lastPriceUpdated": "2019-07-01T19:53:00.838+0200",
+    "shortSellable": false,
+    "isin": "US0079031078",
+    "tradable": true,
+    "tickerSymbol": "AMD",
+    "loanFactor": 60,
+    "flagCode": "US",
+    "quoteUpdated": "2019-07-01T19:53:09.515+0200",
+    "hasInvestmentFees": false,
+    "name": "Advanced Micro Devices Inc",
+    "id": "529720",
+    "country": "USA",
+    "keyRatios": {
+        "priceEarningsRatio": 97.47,
+        "directYield": 0
+    },
+    "numberOfOwners": 3589,
+    "superLoan": false,
+    "pushPermitted": false,
+    "dividends": [],
+    "relatedStocks": [
+        {
+            "lastPrice": 45.37,
+            "priceOneYearAgo": 46.19,
+            "flagCode": "US",
+            "name": "Applied Materials Inc",
+            "id": "3575"
+        },
+        {
+            "lastPrice": 297.55,
+            "priceOneYearAgo": 242.74,
+            "flagCode": "US",
+            "name": "Broadcom Inc",
+            "id": "369636"
+        },
+        {
+            "lastPrice": 188.3,
+            "priceOneYearAgo": 134.4,
+            "flagCode": "US",
+            "name": "Red Hat Inc",
+            "id": "63187"
+        },
+        {
+            "lastPrice": 40.08,
+            "priceOneYearAgo": 52.45,
+            "flagCode": "US",
+            "name": "Micron Technology Inc",
+            "id": "214533"
+        },
+        {
+            "lastPrice": 47.98,
+            "priceOneYearAgo": 49.73,
+            "flagCode": "US",
+            "name": "Intel Corp",
+            "id": "3658"
+        }
+    ],
+    "company": {
+        "sector": "Teknik",
+        "stocks": [
+            {
+                "totalNumberOfShares": 1081600723,
+                "name": "Advanced Micro Devices Inc"
+            }
+        ],
+        "chairman": "John E. Caldwell",
+        "totalNumberOfShares": 1081600723,
+        "description": "Advanced Micro Devices, förkortat AMD, är ett amerikanskt bolag inriktade mot utveckling av industriella halvledare. Produkterna används inom olika affärs- och konsumentmarknader, där bolaget utvecklar diverse mikroproccessorer för datorer och övriga hårdvaror. Verksamhet innehas på global nivå, med huvudkontor i Sunnyvale.",
+        "marketCapital": 32848213957,
+        "marketCapitalCurrency": "USD",
+        "name": "Advanced Micro Devices",
+        "id": "100799",
+        "CEO": "Lisa Su"
+    },
+    "orderDepthLevels": [
+        {
+            "sell": {
+                "percent": 100,
+                "price": 31.13,
+                "volume": 5740
+            },
+            "buy": {
+                "percent": 19.390243902439025,
+                "price": 31.12,
+                "volume": 1113
+            }
+        }
+    ],
+    "marketMakerExpected": false,
+    "orderDepthReceivedTime": "2019-07-01T19:53:09.515+0200",
+    "latestTrades": [],
+    "marketTrades": false,
+    "annualMeetings": [],
+    "companyReports": [
+        {
+            "reportType": "INTERIM",
+            "eventDate": "2019-04-30"
+        }
+    ],
+    "brokerTradeSummary": {
+        "orderbookId": "529720",
+        "items": [
+            {
+                "buyVolume": 43317121,
+                "sellVolume": 43317121,
+                "brokerCode": "Anonyma",
+                "netBuyVolume": 0
+            }
+        ]
+    }
+}"""
+
+    def test_create(self):
+        dao = AvanzaStockDAO.from_dict(json.loads(self.stock_response))
+        self.assertEqual(dao.id, "529720")
+        self.assertEqual(dao.name, "Advanced Micro Devices Inc")
+        self.assertEqual(dao.sellPrice, 31.13)

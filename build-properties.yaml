@@ -1,0 +1,9 @@
+image:
+  registry: irori.johansson.tech
+  package: automation-liberation/stock-checker
+  tag: 0.1.2
+changelog:
+  Added:
+    - Ability to check status on a stock based on Ananza ID
+  Changed:
+    - Now using standard deploy process with changelog
